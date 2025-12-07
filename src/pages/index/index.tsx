@@ -4,6 +4,7 @@ import styles from './index.module.scss'
 import useStore from '@/stores/useStore'
 import CommonHeader from '@/components/header/CommonHeader'
 import CommonSearchBar from '@/components/searchBar/CommonSearchBar'
+import CommonNav from '@/components/navigation/CommonNav'
 function index() {
 
     const count = useStore((state) => state.count)
@@ -15,6 +16,7 @@ function index() {
             {/* 공통 헤더 UI 부분 */}
             <CommonHeader />
             {/* 공통 네비게이션 UI 부분 */}
+            <CommonNav />
             <div className={styles.page__contents}>
                 <div className={styles.page__contents__introBox}>
                     <div className={styles.wrapper}>
