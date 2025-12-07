@@ -1,6 +1,6 @@
 import CommonHeader from '../header/CommonHeader'
 import { useState, useEffect } from 'react'
-import BookCard from './bookcard/BookCard'
+import BookCard from '../card/bookcard/BookCard'
 import styles from './Bookmark.module.scss'
 import type { CardDTO } from '@/components/card/types/card'
 
