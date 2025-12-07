@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import styles from './CommonNav.module.scss'
 import navJson from './nav.json'
+import { useSearchValue } from '@/stores/searchValueState'
+import { useDataSelector } from '@/stores/dataSelector'
+import { usePageState } from '@/stores/pageState'
 
 interface Navigation {
     index: number
@@ -14,6 +17,8 @@ interface Navigation {
 function CommonNav() {
     const location = useLocation()
     const [navigation, setNavigation] = useState<Navigation[]>(navJson)
+    const setpageState = usePageState((state) => state.setPageState)
+    const setSearchValue = useSearchValue((state) => state.setSearchValue)
 
     useEffect(() => {
         navigation.forEach((nav: Navigation) => {
@@ -21,6 +26,9 @@ function CommonNav() {
 
             if (nav.path === location.pathname || location.pathname.includes(nav.path)) {
                 nav.isActive = true
+                setSearchValue(nav.searchValue)
+                setpageState(1)
+                useDataSelector.getState().fetchData();
             }
         })
         setNavigation([...navigation])

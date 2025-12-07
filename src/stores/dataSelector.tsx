@@ -11,7 +11,7 @@ type State = {
 
 export const useDataSelector = create<State>((set) => ({
     imgUrls: [],
-    totalPageCount: 200,
+    totalPageCount: 200,  // 임시로 200으로 설정
     fetchData: async () => {
         const searchValue = useSearchValue.getState().searchValue
         const pageValue = usePageState.getState().pageState
