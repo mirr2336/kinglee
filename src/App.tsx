@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import MainPage from '@pages/index'
-import BookmarkPage from '@components/bookMark/BookMark'
+import BookmarkPage from './components/bookMark/BookMark'
 function App() {
 
     return (

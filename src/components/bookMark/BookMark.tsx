@@ -1,7 +1,7 @@
 import CommonHeader from '../header/CommonHeader'
 import { useState, useEffect } from 'react'
 import BookCard from '../card/bookcard/BookCard'
-import styles from './Bookmark.module.scss'
+import styles from './BookMark.module.scss'
 import type { CardDTO } from '@/components/card/types/card'
 
 function Bookmark() {
