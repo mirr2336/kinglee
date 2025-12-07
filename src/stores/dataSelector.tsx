@@ -4,12 +4,14 @@ import { usePageState } from './pageState'
 import { useSearchValue } from './searchValueState'
 
 type State = {
-    imgUrls: any[]
-    fetchData: () => Promise<void>
+    imgUrls: any[]; // 이미지 URL 배열
+    totalPageCount: number;  // 총 페이지 수
+    fetchData: () => Promise<void>;
 }
 
 export const useDataSelector = create<State>((set) => ({
     imgUrls: [],
+    totalPageCount: 0,
     fetchData: async () => {
         const searchValue = useSearchValue.getState().searchValue
         const pageValue = usePageState.getState().pageState
@@ -20,9 +22,11 @@ export const useDataSelector = create<State>((set) => ({
 
         try {
             const res = await axios.get(`${API_URL}?query=${searchValue}&per_page=${PER_PAGE}&client_id=${ACCESS_KEY}&page=${pageValue}`)
-            //console.log('API Response:', res)
+            console.log('API Response:', res)
+            console.log('Total pages:', res.data.total_pages)
             if (res.status === 200) {
                 set({ imgUrls: res.data.results })
+                set({ totalPageCount: res.data.total_pages })
             }
         } catch (error) {
             console.error('Error fetching data:', error)
