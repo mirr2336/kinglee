@@ -42,8 +42,9 @@ function CommonFooter() {
 
     // 다음 페이지로 이동
     const moveToNextPage = () => {
-        if (step < res[step].length - 2) {
+        if (step < res.length - 2) {
             setStep(step + 1)
+            console.log("current page :", res[step + 1][0])
             moveToPage(res[step + 1][0])
         } else return
     }

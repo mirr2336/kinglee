@@ -11,7 +11,7 @@ type State = {
 
 export const useDataSelector = create<State>((set) => ({
     imgUrls: [],
-    totalPageCount: 0,
+    totalPageCount: 200,
     fetchData: async () => {
         const searchValue = useSearchValue.getState().searchValue
         const pageValue = usePageState.getState().pageState
@@ -23,10 +23,10 @@ export const useDataSelector = create<State>((set) => ({
         try {
             const res = await axios.get(`${API_URL}?query=${searchValue}&per_page=${PER_PAGE}&client_id=${ACCESS_KEY}&page=${pageValue}`)
             console.log('API Response:', res)
-            console.log('Total pages:', res.data.total_pages)
+            //console.log('Total pages:', res.data.total_pages)
             if (res.status === 200) {
                 set({ imgUrls: res.data.results })
-                set({ totalPageCount: res.data.total_pages })
+                //set({ totalPageCount: res.data.total_pages })   // 총 페이지 수 가 334 로 나오지만 실제로는 200 까지밖에 없음
             }
         } catch (error) {
             console.error('Error fetching data:', error)

@@ -6,6 +6,6 @@ type State = {
 }
 
 export const usePageState = create<State>((set) => ({
-    pageState: 1,    
+    pageState: 1,
     setPageState: (page: number) => set(() => ({ pageState: page })),
 }))
