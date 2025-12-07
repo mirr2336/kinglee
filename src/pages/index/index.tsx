@@ -1,42 +1,54 @@
-import axios from 'axios'
-import { useEffect, useState } from 'react'
+//import axios from 'axios'
+import { useEffect } from 'react'
 import styles from './index.module.scss'
 import CommonHeader from '@/components/header/CommonHeader'
 import CommonSearchBar from '@/components/searchBar/CommonSearchBar'
 import CommonNav from '@/components/navigation/CommonNav'
 import Card from '@/components/card/Card'
+import { useDataSelector } from '@/stores/dataSelector'
 function index() {
 
-    const [imgUrls, setImgUrls] = useState<string[]>([])
-
-    const getData = async () => {
-        // 데이터 가져오는 로직
-        const API_URL = 'https://api.unsplash.com/search/photos'
-        const ACCESS_KEY = 'WAifS-M-6-ZitJJokc7ACHyZYswi47-pWJrCfJkyPnk'
-        const PER_PAGE = 30
-
-        const searchValue = 'office';
-        const pageValue = 1;
-
-        try {
-
-            const res = await axios.get(`${API_URL}?query=${searchValue}&per_page=${PER_PAGE}&client_id=${ACCESS_KEY}&page=${pageValue}`)
-            console.log(res.data)
-            if (res.status === 200) {
-                setImgUrls(res.data.results)
-            }
-        } catch (error) {
-            console.error('Error fetching data:', error)
-        }
-    }
+    //const [imgUrls, setImgUrls] = useState<string[]>([])
+    
+    const imgUrls = useDataSelector((state) => state.imgUrls)
+    const fetchData = useDataSelector((state) => state.fetchData)  
+    useEffect(() => {
+        fetchData()
+    }, [])
 
     const cardList = imgUrls.map((card: any) => {
         return <Card key={card.id} data={card} />
     })
 
-    useEffect(() => {
-        getData()
-    }, [])
+
+    // const getData = async () => {
+    //     // 데이터 가져오는 로직
+    //     const API_URL = 'https://api.unsplash.com/search/photos'
+    //     const ACCESS_KEY = 'WAifS-M-6-ZitJJokc7ACHyZYswi47-pWJrCfJkyPnk'
+    //     const PER_PAGE = 30
+
+    //     const searchValue = 'office';
+    //     const pageValue = 2;
+
+    //     try {
+
+    //         const res = await axios.get(`${API_URL}?query=${searchValue}&per_page=${PER_PAGE}&client_id=${ACCESS_KEY}&page=${pageValue}`)
+    //         console.log(res.data)
+    //         if (res.status === 200) {
+    //             setImgUrls(res.data.results)
+    //         }
+    //     } catch (error) {
+    //         console.error('Error fetching data:', error)
+    //     }
+    // }
+
+    // const cardList = imgUrls.map((card: any) => {
+    //     return <Card key={card.id} data={card} />
+    // })
+
+    // useEffect(() => {
+    //     getData()
+    // }, [])
 
     return (
         <div className={styles.page}>
