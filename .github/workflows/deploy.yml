@@ -1,69 +1,51 @@
-name: CI-CD
+# GitHub Pages를 통해 정적 콘텐츠를 배포하는 간단한 워크플로우
+name: Deploy static content to Pages
 
 on:
+  # 기본 브랜치에 대한 푸시 이벤트 발생 시 실행
   push:
-    branches:
-      - main
+    branches: ['main']
 
-env:
-  S3_BUCKET_NAME: tiltil
-  RESOURCE_PATH: ./src/main/resources/application.yaml
-  CODE_DEPLOY_APPLICATION_NAME: tiltil-code-deploy
-  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: tiltil-server
+  # Actions 탭에서 수동으로 워크플로우를 실행할 수 있도록 구성
+  workflow_dispatch:
+
+# GITHUB_TOKEN의 권한을 설정하여 GitHub Pages에 배포할 수 있도록 함
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 동시에 하나의 배포만 허용하도록 구성
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
 
 jobs:
-  build:
+  # 단순히 배포만 수행하기에 하나의 잡으로만 구성
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
-          java-version: 11
-        
-        # [1]
-      - name: Set yaml file 
-        uses: microsoft/variable-substitution@v1
+          node-version: lts/*
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          files: ${{ env.RESOURCE_PATH }} 
-        env:
-          override.value: ${{ secrets.DI_FROM_SECRET }} 
-          # override.value: 'from deploy.yaml' <-- 이렇게 사용해도 주입이 된다.
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew
-        shell: bash
-
-        # [2]
-      - name: Build with Gradle
-        run: ./gradlew build
-        shell: bash
-
-        # [3]
-      - name: Make zip file
-        run: zip -r ./$GITHUB_SHA.zip .
-        shell: bash
-
-        # [4]
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} 
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
-          aws-region: ${{ secrets.AWS_REGION }} 
-
-        # [5]
-      - name: Upload to S3
-        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
-
-        # [6]
-      - name: Code Deploy
-        run: | 
-          aws deploy create-deployment \
-          --deployment-config-name CodeDeployDefault.AllAtOnce \
-          --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
-          --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
-          --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip
+          # dist 폴더 업로드
+          path: './dist'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
