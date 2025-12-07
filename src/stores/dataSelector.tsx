@@ -27,7 +27,7 @@ export const useDataSelector = create<State>((set) => ({
             if (res.status === 200) {
                 set({ imgUrls: res.data.results })
                 //set({ totalPageCount: res.data.total_pages })   // 총 페이지 수 가 334 로 나오지만 실제로는 200 까지밖에 없음
-            }
+            }           
         } catch (error) {
             console.error('Error fetching data:', error)
         }

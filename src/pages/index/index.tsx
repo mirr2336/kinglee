@@ -1,5 +1,5 @@
 //import axios from 'axios'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import CommonHeader from '@/components/header/CommonHeader'
 import CommonSearchBar from '@/components/searchBar/CommonSearchBar'
@@ -7,49 +7,23 @@ import CommonNav from '@/components/navigation/CommonNav'
 import CommonFooter from '@/components/footer/CommonFooter'
 import Card from '@/components/card/Card'
 import { useDataSelector } from '@/stores/dataSelector'
+import DetailDialog from '@/components/dialog/DetailDialog'
+import type { CardDTO } from '@/components/card/types/card'
+
 function index() {
 
-    //const [imgUrls, setImgUrls] = useState<string[]>([])
-    
     const imgUrls = useDataSelector((state) => state.imgUrls)
     const fetchData = useDataSelector((state) => state.fetchData)  
+    const [open, setOpen] = useState<boolean>(false)
+    const [imgData, setImgData] = useState<CardDTO>()
+
     useEffect(() => {
         fetchData()
     }, [])
 
-    const cardList = imgUrls.map((card: any) => {
-        return <Card key={card.id} data={card} />
+    const cardList = imgUrls.map((card: CardDTO) => {
+        return <Card key={card.id} data={card} handleDialog={setOpen} handleSetData={setImgData} />
     })
-
-
-    // const getData = async () => {
-    //     // 데이터 가져오는 로직
-    //     const API_URL = 'https://api.unsplash.com/search/photos'
-    //     const ACCESS_KEY = 'WAifS-M-6-ZitJJokc7ACHyZYswi47-pWJrCfJkyPnk'
-    //     const PER_PAGE = 30
-
-    //     const searchValue = 'office';
-    //     const pageValue = 2;
-
-    //     try {
-
-    //         const res = await axios.get(`${API_URL}?query=${searchValue}&per_page=${PER_PAGE}&client_id=${ACCESS_KEY}&page=${pageValue}`)
-    //         console.log(res.data)
-    //         if (res.status === 200) {
-    //             setImgUrls(res.data.results)
-    //         }
-    //     } catch (error) {
-    //         console.error('Error fetching data:', error)
-    //     }
-    // }
-
-    // const cardList = imgUrls.map((card: any) => {
-    //     return <Card key={card.id} data={card} />
-    // })
-
-    // useEffect(() => {
-    //     getData()
-    // }, [])
 
     return (
         <div className={styles.page}>
@@ -75,6 +49,7 @@ function index() {
             </div>
             {/* 공통 푸터 UI 부분 */}
             <CommonFooter />
+            {open && imgData && <DetailDialog data={imgData} handleDialog={setOpen} />}
         </div>
     )
 }
