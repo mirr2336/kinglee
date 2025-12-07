@@ -3,6 +3,7 @@
 import styles from './index.module.scss'
 import useStore from '@/stores/useStore'
 import CommonHeader from '@/components/header/CommonHeader'
+import CommonSearchBar from '@/components/searchBar/CommonSearchBar'
 function index() {
 
     const count = useStore((state) => state.count)
@@ -23,6 +24,7 @@ function index() {
                             모든 지역에 있는 크리에이터들의 지원을 받습니다.
                         </span>
                         {/* 검색창 UI 부분 */}
+                        <CommonSearchBar />
                     </div>
                 </div>
                 <div className={styles.page__contents__imageBox}>
