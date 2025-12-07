@@ -4,6 +4,7 @@ import styles from './index.module.scss'
 import CommonHeader from '@/components/header/CommonHeader'
 import CommonSearchBar from '@/components/searchBar/CommonSearchBar'
 import CommonNav from '@/components/navigation/CommonNav'
+import CommonFooter from '@/components/footer/CommonFooter'
 import Card from '@/components/card/Card'
 import { useDataSelector } from '@/stores/dataSelector'
 function index() {
@@ -73,6 +74,7 @@ function index() {
                 </div>
             </div>
             {/* 공통 푸터 UI 부분 */}
+            <CommonFooter />
         </div>
     )
 }
