@@ -1,13 +1,15 @@
-import useStore from '@stores/useStore';
-
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import MainPage from '@pages/index'
 function App() {
-    const { count, increase, decrease } = useStore();
+
     return (
-        <div>
-            Hello World{count} <br />
-            <button onClick={increase}>Increase</button>
-            <button onClick={decrease}>Decrease</button>
-        </div>
+        <BrowserRouter>
+            <Routes>
+                <Route index path="/kinglee/" element={<MainPage />}></Route>
+                <Route path="/kinglee/search/:id" element={<MainPage />}></Route>
+                <Route path="/kinglee/bookmark" element={<MainPage />}></Route>
+            </Routes>
+        </BrowserRouter>
     )
 }
 

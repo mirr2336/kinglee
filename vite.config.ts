@@ -18,4 +18,12 @@ export default defineConfig({
             '@stores': fileURLToPath(new URL('./src/stores', import.meta.url)),
         },
     },
+    // SCSS 전역 사용
+    css: {
+        preprocessorOptions: {
+            scss: {
+                additionalData: `@use "@/assets/styles/main.scss" as *;`
+            },
+        },
+    },
 })
