@@ -2,10 +2,14 @@ import { create } from 'zustand'
 
 type State = {
     pageState: number
+    stepState: number
     setPageState: (page: number) => void
+    setStepState: (step: number) => void
 }
 
 export const usePageState = create<State>((set) => ({
     pageState: 1,
     setPageState: (page: number) => set(() => ({ pageState: page })),
+    stepState: 0,
+    setStepState: (step: number) => set(() => ({ stepState: step })),   
 }))

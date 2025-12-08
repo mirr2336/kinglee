@@ -19,6 +19,7 @@ function CommonNav() {
     const [navigation, setNavigation] = useState<Navigation[]>(navJson)
     const setpageState = usePageState((state) => state.setPageState)
     const setSearchValue = useSearchValue((state) => state.setSearchValue)
+    const setStepState = usePageState((state) => state.setStepState)
 
     useEffect(() => {
         navigation.forEach((nav: Navigation) => {
@@ -28,6 +29,7 @@ function CommonNav() {
                 nav.isActive = true
                 setSearchValue(nav.searchValue)
                 setpageState(1)
+                setStepState(0)
                 useDataSelector.getState().fetchData();
             }
         })

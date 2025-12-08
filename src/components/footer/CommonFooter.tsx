@@ -9,7 +9,8 @@ function CommonFooter() {
     const pageState = usePageState.getState().pageState;
     const setPageState = usePageState.getState().setPageState;
     const totalPageCount = useDataSelector.getState().totalPageCount;
-    const [step, setStep] = useState(0)
+    const stepState = usePageState.getState().stepState;
+    const setstepState = usePageState.getState().setStepState;
 
     // 페이지 리스트 UI 생성
     const newArr: number[] = new Array()
@@ -34,19 +35,19 @@ function CommonFooter() {
 
     // 이전 페이지로 이동
     const moveToPrevPage = () => {
-        if (step === 0) return
+        if (stepState === 0) return
         else {
-            setStep(step - 1)
-            moveToPage(res[step - 1][0])
+            setstepState(stepState - 1)
+            moveToPage(res[stepState - 1][0])
         }
     }
 
     // 다음 페이지로 이동
     const moveToNextPage = () => {
-        if (step < res.length - 2) {
-            setStep(step + 1)
-            console.log("current page :", res[step + 1][0])
-            moveToPage(res[step + 1][0])
+        if (stepState < res.length - 2) {
+            setstepState(stepState + 1)
+            console.log("current page :", res[stepState + 1][0])
+            moveToPage(res[stepState + 1][0])
         } else return
     }
 
@@ -58,8 +59,8 @@ function CommonFooter() {
                 </button>
                 {/* 변경될 UI 부분 */}
                 {/* <span>1</span> */}
-                {res[step] &&
-                    res[step].map((item: number, index: number) => {
+                {res[stepState] &&
+                    res[stepState].map((item: number, index: number) => {
                         if (item < 11) {
                             return (
                                 <button className={index === pageState - 1 ? `${styles.pagination__button} ${styles.active}` : `${styles.pagination__button} ${styles.inactive}`} key={item} onClick={() => moveToPage(item)}>
@@ -68,7 +69,7 @@ function CommonFooter() {
                             )
                         } else {
                             return (
-                                <button className={index === pageState - 1 - step * 10 ? `${styles.pagination__button} ${styles.active}` : `${styles.pagination__button} ${styles.inactive}`} key={item} onClick={() => moveToPage(item)}>
+                                <button className={index === pageState - 1 - stepState * 10 ? `${styles.pagination__button} ${styles.active}` : `${styles.pagination__button} ${styles.inactive}`} key={item} onClick={() => moveToPage(item)}>
                                     {item}
                                 </button>
                             )
