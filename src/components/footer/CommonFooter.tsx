@@ -5,6 +5,7 @@ import { useDataSelector } from '@/stores/dataSelector'
 
 function CommonFooter() {
 
+    // 전역 상태 가져오기
     const pageState = usePageState.getState().pageState;
     const setPageState = usePageState.getState().setPageState;
     const totalPageCount = useDataSelector.getState().totalPageCount;

@@ -9,6 +9,8 @@ type State = {
     fetchData: () => Promise<void>;
 }
 
+const maxPageCount = 200; // 임시로 200으로 설정
+
 export const useDataSelector = create<State>((set) => ({
     imgUrls: [],
     totalPageCount: 200,  // 임시로 200으로 설정
@@ -26,6 +28,9 @@ export const useDataSelector = create<State>((set) => ({
             //console.log('Total pages:', res.data.total_pages)
             if (res.status === 200) {
                 set({ imgUrls: res.data.results })
+                if ( res.data.total_pages < maxPageCount) {
+                    set({ totalPageCount: res.data.total_pages })
+                }
                 //set({ totalPageCount: res.data.total_pages })   // 총 페이지 수 가 334 로 나오지만 실제로는 200 까지밖에 없음
             }           
         } catch (error) {
