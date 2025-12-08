@@ -113,7 +113,7 @@ function DetailDialog({ data, handleDialog }: Props) {
                         </button>
                         <button className={styles.bookmark__button} onClick={() => { handleOpenPopupDownload(data.urls.full) }}>
                             <span className="material-symbols-outlined" style={{ fontSize: 16 + 'px' }}>
-                                download
+                                pull size
                             </span>
                         </button>
                     </div>
