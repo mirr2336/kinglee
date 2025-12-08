@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import styles from './CommonFooter.module.scss'
 import { usePageState } from '@/stores/pageState'
 import { useDataSelector } from '@/stores/dataSelector'
